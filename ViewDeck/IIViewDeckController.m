@@ -340,16 +340,20 @@ __typeof__(h) __h = (h);                                    \
 }
 
 - (CGRect)centerViewBounds {
-    if (self.navigationControllerBehavior == IIViewDeckNavigationControllerContained)
-        return self.referenceBounds;
-    
+	  if (self.navigationControllerBehavior == IIViewDeckNavigationControllerContained)
+			  return self.referenceBounds;
+  
     return II_CGRectShrink(self.referenceBounds, 0, [self relativeStatusBarHeight] + (self.navigationController.navigationBarHidden ? 0 : self.navigationController.navigationBar.frame.size.height));
 }
 
 - (CGRect)sideViewBounds {
-    if (self.navigationControllerBehavior == IIViewDeckNavigationControllerContained)
-        return self.referenceBounds;
-    
+	if (self.navigationControllerBehavior == IIViewDeckNavigationControllerContained) {
+		if (self.wantsFullScreenLayout)
+				return II_CGRectOffsetTopAndShrink(self.referenceBounds, [self statusBarHeight]);
+		else
+				return self.referenceBounds;
+	}
+  
     return II_CGRectOffsetTopAndShrink(self.referenceBounds, [self relativeStatusBarHeight]);
 }
 
