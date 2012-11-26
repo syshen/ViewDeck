@@ -753,6 +753,33 @@ __typeof__(h) __h = (h);                                    \
     return should;
 }
 
+- (BOOL) shouldAutorotate {
+
+	_preRotationWidth = self.referenceBounds.size.width;
+	_preRotationCenterWidth = self.centerView.bounds.size.width;
+	
+	if (self.rotationBehavior == IIViewDeckRotationKeepsViewSizes) {
+		_leftWidth = self.leftController.view.frame.size.width;
+		_rightWidth = self.rightController.view.frame.size.width;
+	}
+
+	BOOL should = YES;
+	if (self.centerController)
+		should = [self.centerController shouldAutorotate];
+
+	return should;
+	
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	NSUInteger mask = UIInterfaceOrientationMaskAll;
+	if (self.centerController)
+		mask = [self.centerController supportedInterfaceOrientations];
+	return mask;
+	
+}
+
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
